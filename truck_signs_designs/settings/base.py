@@ -24,7 +24,8 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1'] + [os.getenv('IP_ADDRESS_VM', '')]
+
 
 
 # Application definition
@@ -84,16 +85,16 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'NAME_OF_DB',
-#         'USER': 'DB_USER_NAME',
-#         'PASSWORD': 'DB_PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 'PORT_NUMBER',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME', 'trucksigns_db'),
+        'USER': os.getenv('DB_USER', 'trucksigns_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'supertrucksignsuser!'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+    }
+}
 
 
 

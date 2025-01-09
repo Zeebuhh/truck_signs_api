@@ -1,22 +1,28 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Waiting for postgres to connect ..."
+echo "Waiting for postgres to connect..."
 
-while ! nc -z db 5432; do
+while ! nc -z $DB_HOST $DB_PORT; do
   sleep 0.1
 done
 
 echo "PostgreSQL is active"
 
+echo "Collecting static files..."
 python manage.py collectstatic --noinput
-python manage.py migrate
+
+echo "Running migrations..."
 python manage.py makemigrations
+python manage.py migrate
 
-gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
+if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ]; then
+    echo "Creating superuser..."
+    python manage.py createsuperuser \
+        --noinput \
+        --username $DJANGO_SUPERUSER_USERNAME \
+        --email $DJANGO_SUPERUSER_EMAIL || echo "Superuser already exists or creation failed."
+fi
 
-
-
-echo "Postgresql migrations finished"
-
-python manage.py runserver
+echo "Postgresql migrations finished. Starting Gunicorn..."
+gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8020
