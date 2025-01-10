@@ -13,7 +13,10 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
 echo "Running migrations..."
-python manage.py makemigrations
+if [ "$DJANGO_ENV" = "development" ]; then
+  echo "Running makemigrations in development mode..."
+  python manage.py makemigrations
+fi
 python manage.py migrate
 
 if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ]; then
