@@ -19,7 +19,7 @@ if [ "$DJANGO_ENV" = "development" ]; then
 fi
 python manage.py migrate
 
-if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ]; then
+if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then
     echo "Creating superuser..."
     python manage.py createsuperuser \
         --noinput \
