@@ -14,13 +14,13 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # installs the dependencies for the app and that are saved in the requirements.txt
-RUN python -m pip install --upgrade pip && \
-    python -m pip install -r requirements.txt
+RUN python -m pip install --upgrade pip -r requirements.txt
+     
 
 # sets the execution rights if the entrypoint-script is not executable
 RUN chmod +x ./entrypoint.sh
 
-# opens container port 5000 for interaction
+# opens container port 8020 for interaction
 EXPOSE 8020
 
 # entrypoint is outsourced in /app/entrypoint.sh
